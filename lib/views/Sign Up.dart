@@ -539,7 +539,7 @@ class _SignUpState extends State<SignUp> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    Morning_medications()));
+                                                    MorningMedications()));
                                       },
                                       child: Container(
                                         width: 200,

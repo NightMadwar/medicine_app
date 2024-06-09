@@ -1,15 +1,23 @@
 part of 'consumed_medication_bloc.dart';
 
 @immutable
-sealed class ConsumedMedicationState {}
+abstract class ConsumedMedicationState {}
 
-final class ConsumedMedicationInitial extends ConsumedMedicationState {}
+class ConsumedMedicationInitial extends ConsumedMedicationState {}
 
-final class ConsumedMedicationLoading extends ConsumedMedicationState {}
+class ConsumedMedicationLoading extends ConsumedMedicationState {}
 
-final class ConsumedMedicationSuccess extends ConsumedMedicationState {
-  List<ConsumedMedicationModel> consumedMedications;
+class ConsumedMedicationSuccess extends ConsumedMedicationState {
+  final List<ConsumedMedicationModel> consumedMedications;
   ConsumedMedicationSuccess({required this.consumedMedications});
 }
 
-final class ConsumedMedicationError extends ConsumedMedicationState {}
+class ConsumedMedicationUpdateSuccess extends ConsumedMedicationState {
+  final ConsumedMedicationModel updatedMedication;
+  ConsumedMedicationUpdateSuccess({required this.updatedMedication});
+}
+
+class ConsumedMedicationError extends ConsumedMedicationState {
+  final String message;
+  ConsumedMedicationError({required this.message});
+}

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class UserModel {
@@ -56,8 +55,9 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toMap({bool includeId = false}) {
-    final map = <String, dynamic>{
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
       'User_Name': User_Name,
       'Password': Password,
       'Email': Email,
@@ -69,29 +69,35 @@ class UserModel {
       'accessToken': accessToken,
       'tokenType': tokenType,
     };
-
-    if (includeId) {
-      map['id'] = id;
-    }
-
-    return map;
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null
+          ? map['id'] is int
+              ? map['id']
+              : (map['id'] as double).toInt()
+          : null,
       User_Name: map['User_Name'] as String,
       Password: map['Password'] as String,
       Email: map['Email'] != null ? map['Email'] as String : null,
       Gender: map['Gender'] != null ? map['Gender'] as String : null,
       Age: map['Age'] != null ? map['Age'] as String : null,
-      Height: map['Height'] != null ? map['Height'] as double : null,
-      Weight: map['Weight'] != null ? map['Weight'] as double : null,
+      Height: map['Height'] != null
+          ? map['Height'] is int
+              ? (map['Height'] as int).toDouble()
+              : map['Height'] as double
+          : null,
+      Weight: map['Weight'] != null
+          ? map['Weight'] is int
+              ? (map['Weight'] as int).toDouble()
+              : map['Weight'] as double
+          : null,
       User_Location:
           map['User_Location'] != null ? map['User_Location'] as String : null,
       accessToken:
-          map['access_token'] != null ? map['access_token'] as String : null,
-      tokenType: map['token_type'] != null ? map['token_type'] as String : null,
+          map['accessToken'] != null ? map['accessToken'] as String : null,
+      tokenType: map['tokenType'] != null ? map['tokenType'] as String : null,
     );
   }
 

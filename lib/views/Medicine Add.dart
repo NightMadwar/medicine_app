@@ -236,7 +236,7 @@ class _MedicineAddState extends State<MedicineAdd> {
                             _selectedImage != null) {
                           context.read<ConsumedMedicationBloc>().add(
                                 PostMedication(
-                                  drug: DrugModel(
+                                  DrugModel(
                                     Drug_name: nameController.text,
                                     Effective_Material:
                                         effectiveMaterialController.text,
@@ -245,7 +245,7 @@ class _MedicineAddState extends State<MedicineAdd> {
                                         otherInformationController.text,
                                     image: _selectedImage!.path,
                                   ),
-                                  medication: ConsumedMedicationModel(
+                                  ConsumedMedicationModel(
                                     Doctor_Name: doctorNameController.text,
                                     User_ID: 1, // Replace with actual user ID
                                     Date_Prescibed:
@@ -256,7 +256,7 @@ class _MedicineAddState extends State<MedicineAdd> {
                               );
                           Future.delayed(Duration(seconds: 5));
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Morning_medications()));
+                              builder: (context) => MorningMedications()));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

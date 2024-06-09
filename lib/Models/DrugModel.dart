@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class DrugModel {
@@ -8,6 +7,7 @@ class DrugModel {
   String Side_Effects;
   String Other_Information;
   String image;
+
   DrugModel({
     this.id,
     required this.Drug_name,
@@ -36,7 +36,7 @@ class DrugModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    return {
       'id': id,
       'Drug_name': Drug_name,
       'Effective_Material': Effective_Material,
@@ -48,7 +48,11 @@ class DrugModel {
 
   factory DrugModel.fromMap(Map<String, dynamic> map) {
     return DrugModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null
+          ? map['id'] is int
+              ? map['id']
+              : (map['id'] as double).toInt()
+          : null,
       Drug_name: map['Drug_name'] as String,
       Effective_Material: map['Effective_Material'] as String,
       Side_Effects: map['Side_Effects'] as String,
@@ -60,7 +64,7 @@ class DrugModel {
   String toJson() => json.encode(toMap());
 
   factory DrugModel.fromJson(String source) =>
-      DrugModel.fromMap(json.decode(source) as Map<String, dynamic>);
+      DrugModel.fromMap(json.decode(source));
 
   @override
   String toString() {

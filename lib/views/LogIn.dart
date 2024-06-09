@@ -35,7 +35,7 @@ class _LogInState extends State<LogIn> {
               ));
               Future.delayed(const Duration(seconds: 2));
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => Morning_medications()));
+                  builder: (context) => MorningMedications()));
             }
             if (state is Error) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

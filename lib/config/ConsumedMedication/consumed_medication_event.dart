@@ -1,23 +1,31 @@
 part of 'consumed_medication_bloc.dart';
 
 @immutable
-sealed class ConsumedMedicationEvent {}
+abstract class ConsumedMedicationEvent {}
 
-final class GetAllConsumedMedications extends ConsumedMedicationEvent {
-  String Name;
-  GetAllConsumedMedications({required this.Name});
+class PostMedication extends ConsumedMedicationEvent {
+  final DrugModel drug;
+  final ConsumedMedicationModel medication;
+
+  PostMedication(this.drug, this.medication);
 }
 
-final class GetAllMorning extends ConsumedMedicationEvent {}
+class UpdateMedication extends ConsumedMedicationEvent {
+  final int id;
+  final DrugModel drug;
+  final ConsumedMedicationModel medication;
 
-final class GetAllAfternoon extends ConsumedMedicationEvent {}
-
-final class GetAllEvening extends ConsumedMedicationEvent {}
-
-final class GetConsumedMedication extends ConsumedMedicationEvent {}
-
-final class PostMedication extends ConsumedMedicationEvent {
-  DrugModel drug;
-  ConsumedMedicationModel medication;
-  PostMedication({required this.drug, required this.medication});
+  UpdateMedication(this.id, this.drug, this.medication);
 }
+
+class GetAllConsumedMedications extends ConsumedMedicationEvent {
+  final String Name;
+
+  GetAllConsumedMedications(this.Name);
+}
+
+class GetAllMorning extends ConsumedMedicationEvent {}
+
+class GetAllAfternoon extends ConsumedMedicationEvent {}
+
+class GetAllEvening extends ConsumedMedicationEvent {}

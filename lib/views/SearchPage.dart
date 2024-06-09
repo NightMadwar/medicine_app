@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
                 controller: Name,
                 onEditingComplete: () => context
                     .read<ConsumedMedicationBloc>()
-                    .add(GetAllConsumedMedications(Name: Name.text)),
+                    .add(GetAllConsumedMedications(Name.text)),
                 decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,

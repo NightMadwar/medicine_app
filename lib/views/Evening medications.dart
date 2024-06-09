@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/test/test_flutter_secure_storage_platform.dart';
+import 'package:medicine_app/Models/ConsumedMedicationModel.dart';
 import 'package:medicine_app/config/ConsumedMedication/consumed_medication_bloc.dart';
 import 'package:medicine_app/views/Afternoon%20medications.dart';
 import 'package:medicine_app/views/Medicine%20Add.dart';
 import 'package:medicine_app/views/Morning%20medications.dart';
 import 'package:medicine_app/views/Notification.dart';
 import 'package:medicine_app/views/SearchPage.dart';
+import 'package:medicine_app/views/Update%20medication.dart';
 
 class Details {
   String? title;
@@ -61,21 +63,22 @@ class _Evening_MediactionsState extends State<Evening_Mediactions> {
         numberofpotion: 2,
         SuperVisor: "Dr Taj"),
   ];
-  void _showDialogsearch(BuildContext context, Details details) {
+  void _showDialogsearch(
+      BuildContext context, ConsumedMedicationModel details) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(details.title!),
+            title: Text(details.drug!.Drug_name),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Description: ${details.Description}"),
+                Text("Doctor: ${details.Doctor_Name}"),
                 SizedBox(height: 8),
-                Text("Number of potion: ${details.numberofpotion}"),
+                Text("Period: ${details.period}"),
                 SizedBox(height: 8),
-                Text("Doctor: ${details.SuperVisor}"),
+                Text("Date prescibed : ${details.Date_Prescibed}"),
               ],
             ),
             actions: [
@@ -183,7 +186,7 @@ class _Evening_MediactionsState extends State<Evening_Mediactions> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Morning_medications()));
+                              builder: (context) => MorningMedications()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -278,8 +281,8 @@ class _Evening_MediactionsState extends State<Evening_Mediactions> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      _showDialogsearch(
-                                          context, Detailes[index]);
+                                      _showDialogsearch(context,
+                                          state.consumedMedications[index]);
                                     },
                                     child: Container(
                                         height: 30,
@@ -299,8 +302,14 @@ class _Evening_MediactionsState extends State<Evening_Mediactions> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      _showDialogsearch(
-                                          context, Detailes[index]);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MedicineUpdate(
+                                                    medication: state
+                                                            .consumedMedications[
+                                                        index],
+                                                  )));
                                     },
                                     child: Container(
                                         height: 30,

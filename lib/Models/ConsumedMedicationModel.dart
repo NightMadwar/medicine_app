@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:medicine_app/Models/DrugModel.dart';
 import 'package:medicine_app/Models/UserModel.dart';
 
@@ -13,6 +11,7 @@ class ConsumedMedicationModel {
   String Doctor_Name;
   String? Date_Prescibed;
   String period;
+
   ConsumedMedicationModel({
     this.id,
     required this.Drug_ID,
@@ -47,7 +46,7 @@ class ConsumedMedicationModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    return {
       'id': id,
       'Drug_ID': Drug_ID,
       'User_ID': User_ID,
@@ -61,15 +60,19 @@ class ConsumedMedicationModel {
 
   factory ConsumedMedicationModel.fromMap(Map<String, dynamic> map) {
     return ConsumedMedicationModel(
-      id: map['id'] != null ? map['id'] as int : null,
-      Drug_ID: map['Drug_ID'] as int,
-      User_ID: map['User_ID'] as int,
-      drug: map['drug'] != null
-          ? DrugModel.fromMap(map['drug'] as Map<String, dynamic>)
+      id: map['id'] != null
+          ? map['id'] is int
+              ? map['id']
+              : (map['id'] as double).toInt()
           : null,
-      user: map['user'] != null
-          ? UserModel.fromMap(map['user'] as Map<String, dynamic>)
-          : null,
+      Drug_ID: map['Drug_ID'] is int
+          ? map['Drug_ID']
+          : (map['Drug_ID'] as double).toInt(),
+      User_ID: map['User_ID'] is int
+          ? map['User_ID']
+          : (map['User_ID'] as double).toInt(),
+      drug: map['drug'] != null ? DrugModel.fromMap(map['drug']) : null,
+      user: map['user'] != null ? UserModel.fromMap(map['user']) : null,
       Doctor_Name: map['Doctor_Name'] as String,
       Date_Prescibed: map['Date_Prescibed'] != null
           ? map['Date_Prescibed'] as String
@@ -81,8 +84,7 @@ class ConsumedMedicationModel {
   String toJson() => json.encode(toMap());
 
   factory ConsumedMedicationModel.fromJson(String source) =>
-      ConsumedMedicationModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+      ConsumedMedicationModel.fromMap(json.decode(source));
 
   @override
   String toString() {

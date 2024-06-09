@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:medicine_app/Models/ConsumedMedicationModel.dart';
@@ -6,6 +9,12 @@ import 'package:medicine_app/Service/BaseService.dart';
 import 'package:medicine_app/config/get_it.dart';
 
 class ConsumedMedicationService extends BaseService {
+  final FlutterSecureStorage storage = getIt.get<FlutterSecureStorage>();
+
+  Future<String?> getToken() async {
+    return await storage.read(key: "token");
+  }
+
   postMedication(DrugModel drug, ConsumedMedicationModel medication) async {
     try {
       final storage = getIt.get<FlutterSecureStorage>();
@@ -56,6 +65,72 @@ class ConsumedMedicationService extends BaseService {
     } catch (e) {
       print(e);
       throw Exception('Error posting medication: $e');
+    }
+  }
+
+  Future<String> _convertImageToBase64(String imagePath) async {
+    final bytes = File(imagePath).readAsBytesSync();
+    return base64Encode(bytes);
+  }
+
+  Future<Response> updateMedication(
+      int id, DrugModel drug, ConsumedMedicationModel medication) async {
+    try {
+      final token = await getToken();
+
+      if (token == null) {
+        throw Exception("Token is null");
+      }
+
+      String? imageBase64;
+      if (drug.image != null) {
+        imageBase64 = await _convertImageToBase64(drug.image);
+      }
+
+      Map<String, dynamic> data = {
+        'Drug_name': drug.Drug_name,
+        'Effective_Material': drug.Effective_Material,
+        'Side_Effects': drug.Side_Effects,
+        'Other_Information': drug.Other_Information,
+        'Doctor_Name': medication.Doctor_Name,
+        'Date_Prescibed': medication.Date_Prescibed,
+        'period': medication.period,
+        if (imageBase64 != null) 'image': imageBase64,
+      };
+
+      Response response = await Dio().put(
+        BaseURL + "consumed_medications/$id",
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      print("Request Data: $data");
+      print("Response Status: ${response.statusCode}");
+      print("Response Data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        if (response.data != null) {
+          print(response.data);
+          return response;
+        } else {
+          throw Exception('Response data is null');
+        }
+      } else if (response.statusCode == 404) {
+        throw Exception(
+            'Resource not found. Check the endpoint URL and the existence of the resource.');
+      } else {
+        throw Exception(
+            'Failed to update medication: ${response.statusMessage}');
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Error updating medication: $e');
     }
   }
 

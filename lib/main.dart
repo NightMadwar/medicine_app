@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicine_app/config/ConsumedMedication/consumed_medication_bloc.dart';
+import 'package:medicine_app/config/auth/auth_bloc.dart';
 import 'package:medicine_app/config/get_it.dart';
 import 'package:medicine_app/views/LogIn.dart';
+import 'package:medicine_app/views/Morning%20medications.dart';
 import 'package:medicine_app/views/Notification.dart';
 import 'package:medicine_app/views/SearchPage.dart';
 import 'package:medicine_app/views/Sign%20Up.dart';
@@ -43,9 +47,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SignUp(),
+    return BlocProvider(
+      create: (context) => ConsumedMedicationBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Builder(builder: (context) {
+          return SignUp();
+        }),
+      ),
     );
   }
 }
